@@ -4,7 +4,7 @@ import Dialog from "@mui/material/Dialog";
 import DialogContent from "@mui/material/DialogContent";
 import { Input, MenuItem, Select } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
-import { useFormik } from "formik";
+import { Field, useFormik } from "formik";
 import AddIcon from "@mui/icons-material/Add";
 
 export default function AddPatient({ patientId, open, setOpen, action }) {
@@ -21,13 +21,19 @@ export default function AddPatient({ patientId, open, setOpen, action }) {
   // }
 
   // const [user, setUser] = useState([{}]);
+  // const petType = [
+  //   { key: "select a pet type", value: "" },
+  //   { key: "Cat", value: "Cat" },
+  //   { key: "Dog", value: "Dog" },
+  //   { key: "Parrot", value: "Parrot" },
+  // ];
   const formik = useFormik({
     initialValues: {
       name: "",
       phoneNum: "",
       petName: "",
       petAge: "",
-      petType: "",
+      petType: [],
     },
     onSubmit: (values) => {
       fetch(`/api/patient`, {
@@ -143,17 +149,18 @@ export default function AddPatient({ patientId, open, setOpen, action }) {
               value={formik.values.petAge}
             />
             <p>Pet type:</p>{" "}
-            <Select
-              labelId="demo-simple-select-label"
-              id="demo-simple-select"
-              value={formik.values.petType}
-              label="type"
-              onSelect={formik.handleChange}
+            <Field
+              component={Select}
+              type="text"
+              label="petType"
+              name="petType"
+              multiple={true}
+              inputProps={{ name: "petType", id: "petType" }}
             >
               <MenuItem value={"Cat"}>Cat</MenuItem>
               <MenuItem value={"Dog"}>Dog</MenuItem>
               <MenuItem value={"Parrot"}>Parrot</MenuItem>
-            </Select>
+            </Field>
             <Button type="submit" onClick={() => handleClose()}>
               Add
             </Button>

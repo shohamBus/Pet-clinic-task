@@ -21,7 +21,7 @@
     "@mui/x-data-grid": "^5.15.2",
     "axios": "^0.27.2",
     "formik": "^2.2.9",
-    "material-table": "1.36.0",
+    "material-table": "^2.0.3",
     "material-table-next": "^1.1.10",
     "mongoose": "^6.5.2",
     "next": "12.2.4",
