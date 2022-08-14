@@ -19,16 +19,6 @@ export default function PatsTable() {
   const [openEdit, setOpenEdit] = useState(false);
   const [patientId, setPatientId] = useState("");
 
-  const [filterButtonEl, setFilterButtonEl] = React.useState(null);
-
-  const CustomToolbar = React.useCallback(() => {
-    return (
-      <GridToolbarContainer>
-        <GridToolbarQuickFilter ref={setFilterButtonEl} />
-      </GridToolbarContainer>
-    );
-  }, []);
-
   const editUser = useCallback(
     (id) => () => {
       setTimeout(() => {
@@ -119,14 +109,6 @@ export default function PatsTable() {
           rowsPerPageOptions={[5]}
           onSelectionModelChange={(categoryId) => dialog(categoryId)}
           disableSelectionOnClick
-          components={{
-            Toolbar: CustomToolbar,
-          }}
-          componentsProps={{
-            panel: {
-              anchorEl: filterButtonEl,
-            },
-          }}
         />
         <AddPatient open={openAdd} setOpen={setOpenAdd} />
         <EditPatient

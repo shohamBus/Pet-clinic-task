@@ -61,6 +61,9 @@ function Mtable() {
     <div className="App">
       <h1 align="center">React-App</h1>
       <h4 align="center">Filtering in Material Table</h4>
+      <div>
+        <p>add content</p>
+      </div>
 
       <MaterialTable
         title="Employee Data"

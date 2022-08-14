@@ -1,7 +1,7 @@
 import Head from "next/head";
 import Header from "../components/Header";
-import PatsTable from "../components/PatsTable";
-import Mtable from "../components/Mtable";
+import ReactTable from "../components/reactTable/ReactTable";
+
 
 
 // export async function getServerSideProps() {
@@ -31,7 +31,8 @@ export default function Home( ) {
       </Head>
       <Header/>
       {/* <PatsTable /> */}
-      <Mtable/>
+      {/* <Mtable/> */}
+      <ReactTable/>
     </div>
   );
 }

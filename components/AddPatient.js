@@ -149,7 +149,7 @@ export default function AddPatient({ patientId, open, setOpen, action }) {
               value={formik.values.petAge}
             />
             <p>Pet type:</p>{" "}
-            <Field
+            {/* <Field
               component={Select}
               type="text"
               label="petType"
@@ -160,7 +160,7 @@ export default function AddPatient({ patientId, open, setOpen, action }) {
               <MenuItem value={"Cat"}>Cat</MenuItem>
               <MenuItem value={"Dog"}>Dog</MenuItem>
               <MenuItem value={"Parrot"}>Parrot</MenuItem>
-            </Field>
+            </Field> */}
             <Button type="submit" onClick={() => handleClose()}>
               Add
             </Button>
