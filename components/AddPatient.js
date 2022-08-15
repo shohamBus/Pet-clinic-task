@@ -8,32 +8,13 @@ import { Field, useFormik } from "formik";
 import AddIcon from "@mui/icons-material/Add";
 
 export default function AddPatient({ patientId, open, setOpen, action }) {
-  // {
-  //   userId
-  //     ? fetch(`/api/user/${patientId}`, {
-  //         method: "GET",
-  //       })
-  //         .then((res) => res.json())
-  //         .then((res) => {
-  //           setUser(res);
-  //         })
-  //     : null;
-  // }
-
-  // const [user, setUser] = useState([{}]);
-  // const petType = [
-  //   { key: "select a pet type", value: "" },
-  //   { key: "Cat", value: "Cat" },
-  //   { key: "Dog", value: "Dog" },
-  //   { key: "Parrot", value: "Parrot" },
-  // ];
   const formik = useFormik({
     initialValues: {
       name: "",
       phoneNum: "",
       petName: "",
       petAge: "",
-      petType: [],
+      petType: "",
     },
     onSubmit: (values) => {
       fetch(`/api/patient`, {
@@ -42,62 +23,11 @@ export default function AddPatient({ patientId, open, setOpen, action }) {
       });
     },
   });
-  // {
-  //   !user.length
-  //     ? (formik = useFormik({
-  //         initialValues: {
-  //           name: "",
-  //           phoneNum: "",
-  //           petName: "",
-  //           petAge: "",
-  //           petType: "",
-  //         },
-  //       }))
-  //     : (formik = useFormik({
-  //         initialValues: {
-  //           name: "",
-  //           phoneNum: "",
-  //           petName: "",
-  //           petAge: "",
-  //           petType: "",
-  //         },
-  //       }));
-  // }
-  //   const updateState = (change, val) => {
-  //     change == "title"
-  //       ? setCategory({ ...category, title: val })
-  //       : change == "titleheb"
-  //       ? setCategory({ ...category, titleheb: val })
-  //       : change == "img"
-  //       ? setCategory({ ...category, img: val })
-  //       : "";
-  //   };
-  // const deleteUser = (patientId) => {
-  //   fetch(`/api/patient`, {
-  //     method: "DELETE",
-  //     body: JSON.stringify(categoryId),
-  //   });
-  // };
-  // const updateUser = (user) => {
-  //   fetch(`/api/category`, {
-  //     method: "PATCH",
-  //     body: JSON.stringify(user),
-  //   });
-  // };
-  // const handleClickOpen = () => {
-  //   setOpen(true);
-  // };
 
   const handleClose = () => {
     setOpen(false);
   };
-  // const handleContent = (e) => {
-  //   return (newTitle = e.target.value);
-  // };
-  //send the cart product the title and the email
-  //   const handleClick = async () => {
-  // await axios.patch(`/api/user`, { cartProducts, email, title });
-  //   };
+
   return (
     <div>
       <Dialog
@@ -106,13 +36,7 @@ export default function AddPatient({ patientId, open, setOpen, action }) {
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
-        <form onSubmit={formik.handleSubmit}>
-          <div className=" px-32  ">
-            <h1>Add patient:</h1> <AddIcon />
-            <Button onClick={() => deleteCategory(user._id)}>
-              <DeleteIcon />
-            </Button>
-          </div>
+        <form className="w-full max-w-sm mx-10" onSubmit={formik.handleSubmit}>
           <DialogContent
             sx={{
               display: "flex",
@@ -120,57 +44,127 @@ export default function AddPatient({ patientId, open, setOpen, action }) {
               alignItems: "center",
             }}
           >
-            <p>name of the owner:</p>
-            <Input
-              name="name"
-              type="text"
-              onChange={formik.handleChange}
-              value={formik.values.name}
-            />
-            <p>Phone number of the owner:</p>{" "}
-            <Input
-              name="phoneNum"
-              type="text"
-              onChange={formik.handleChange}
-              value={formik.values.phoneNum}
-            />
-            <p>Pet name:</p>{" "}
-            <Input
-              name="petName"
-              type="text"
-              onChange={formik.handleChange}
-              value={formik.values.petName}
-            />
-            <p>Pet age:</p>{" "}
-            <Input
-              name="petAge"
-              type="text"
-              onChange={formik.handleChange}
-              value={formik.values.petAge}
-            />
-            <p>Pet type:</p>{" "}
-            {/* <Field
-              component={Select}
-              type="text"
-              label="petType"
-              name="petType"
-              multiple={true}
-              inputProps={{ name: "petType", id: "petType" }}
-            >
-              <MenuItem value={"Cat"}>Cat</MenuItem>
-              <MenuItem value={"Dog"}>Dog</MenuItem>
-              <MenuItem value={"Parrot"}>Parrot</MenuItem>
-            </Field> */}
-            <Button type="submit" onClick={() => handleClose()}>
-              Add
-            </Button>
-            {/* {action === "Add" ? (
-            ) : action === "Edit" ? (
-              <Button type="submit" onClick={() => updateCategory(category)}>
-                Edit
-              </Button>
-            ) : null} */}
-            <Button onClick={() => handleClose()}>Close</Button>
+            <div className="md:flex md:space-x-24 mb-6">
+              <div className=" text-left  text-[#000000] text-2xl underline font-bold ">
+                Add patient +:
+              </div>
+              <div className=" text-right">
+                <Button onClick={() => deleteCategory(user._id)}>
+                  <DeleteIcon className=" text-[#000000] text-4xl" />
+                </Button>
+              </div>
+            </div>
+            <div className="md:flex md:items-center mb-6">
+              <div className="md:w-1/3">
+                <label
+                  className="block text-[#626664] font-bold  mb-1 md:mb-0 pr-4"
+                  htmlFor="name"
+                >
+                  <p>name of the owner:</p>
+                </label>
+              </div>
+              <div className="md:w-2/3">
+                <input
+                  className="bg-[#cacfcd] appearance-none border-2 border-[#cacfcd] rounded w-full py-2 px-4 text-[#626664] leading-tight focus:outline-none focus:bg-[#ffff] focus:border-[#cacfcd]"
+                  id="name"
+                  name="name"
+                  type="text"
+                  onChange={formik.handleChange}
+                  value={formik.values.name}
+                />
+              </div>
+            </div>
+            <div className="md:flex md:items-center mb-6">
+              <div className="md:w-1/3">
+                <label
+                  className="block text-[#626664] font-bold  mb-1 md:mb-0 pr-4"
+                  htmlFor="phone"
+                >
+                  Phone number of the owner:
+                </label>
+              </div>
+              <div className="md:w-2/3">
+                <input
+                  className="bg-[#cacfcd] appearance-none border-2 border-[#cacfcd] rounded w-full py-2 px-4 text-[#626664] leading-tight focus:outline-none focus:bg-[#ffff] focus:border-[#cacfcd]"
+                  id="phone"
+                  name="phoneNum"
+                  type="text"
+                  onChange={formik.handleChange}
+                  value={formik.values.phoneNum}
+                />
+              </div>
+            </div>
+            <div className="md:flex md:items-center mb-6">
+              <div className="md:w-1/3">
+                <label
+                  className="block text-[#626664] font-bold   mb-1 md:mb-0 pr-4"
+                  htmlFor="petName"
+                >
+                  Pet name:
+                </label>
+              </div>
+              <div className="md:w-2/3">
+                <input
+                  className="bg-[#cacfcd] appearance-none border-2 border-[#cacfcd] rounded w-full py-2 px-4 text-[#626664] leading-tight focus:outline-none focus:bg-[#ffff] focus:border-[#cacfcd]"
+                  id="petName"
+                  name="petName"
+                  type="text"
+                  onChange={formik.handleChange}
+                  value={formik.values.petName}
+                />
+              </div>
+            </div>
+            <div className="md:flex md:items-center mb-6">
+              <div className="md:w-1/3">
+                <label
+                  className="block text-[#626664] font-bold  mb-1 md:mb-0 pr-4"
+                  htmlFor="petAge"
+                >
+                  Pet age:
+                </label>
+              </div>
+              <div className="md:w-2/3">
+                <input
+                  className="bg-[#cacfcd] appearance-none border-2 border-[#cacfcd] rounded w-full py-2 px-4 text-[#626664] leading-tight focus:outline-none focus:bg-[#ffff] focus:border-[#cacfcd]"
+                  id="petAge"
+                  name="petAge"
+                  type="text"
+                  onChange={formik.handleChange}
+                  value={formik.values.petAge}
+                />
+              </div>
+            </div>
+            <div className="md:flex md:items-center mb-6">
+              <div className="md:w-1/3">
+                <label
+                  className="block text-[#626664] font-bold  mb-1 md:mb-0 pr-4"
+                  htmlFor="petType"
+                >
+                  Pet type:
+                </label>
+              </div>
+              <div className="md:w-2/3">
+                <select
+                  className="bg-[#cacfcd] appearance-none border-2 border-[#cacfcd] rounded w-full py-2 px-4 text-[#626664] leading-tight focus:outline-none focus:bg-[#ffff] focus:border-[#cacfcd]"
+                  id="petType"
+                  name="petType"
+                  type="text"
+                  onChange={formik.handleChange}
+                  value={formik.values.petType}
+                >
+                  <option>enter type..</option>
+                  <option value={"Cat"}>Cat</option>
+                  <option value={"Dog"}>Dog</option>
+                  <option value={"Parrot"}>Parrot</option>
+                </select>
+              </div>
+            </div>
+            <div className="md:flex md:items-center mb-6">
+              <Button type="submit" onClick={() => handleClose()}>
+                Add
+              </Button>{" "}
+              <Button onClick={() => handleClose()}>Close</Button>
+            </div>
           </DialogContent>
         </form>
       </Dialog>

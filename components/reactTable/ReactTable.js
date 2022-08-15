@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 // import { IconButton } from "@material-ui/core";
 import EditIcon from "@mui/icons-material/Edit";
 import AddIcon from "@mui/icons-material/Add";
@@ -16,6 +16,7 @@ import { useClinic } from "../../context/UsersContext";
 import { Button, IconButton } from "@mui/material";
 import AddPatient from "../AddPatient";
 import EditPatient from "../EditPatient";
+import { set } from "mongoose";
 
 // Define a default UI for filtering
 function DefaultColumnFilter({
@@ -32,14 +33,33 @@ function DefaultColumnFilter({
   );
 }
 
-// This is a custom filter UI for selecting
-// a unique option from a list
+export const MultipleFilter = (rows, filler, filterValue) => {
+  const arr = [];
+  rows.forEach((val) => {
+    // console.log(val);
+    if (filterValue.includes(val.original.petType)) arr.push(val);
+    console.log(filterValue);
+    console.log(val.original.petType);
+  });
+  console.log(arr);
+  return arr;
+};
+function setFilteredParams(filterArr, val) {
+  console.log(filterArr);
+  console.log(val);
+  if (filterArr.includes(val)) {
+    filterArr = filterArr.filter((n) => {
+      return n !== val;
+    });
+  } else filterArr.push(val);
+
+  if (filterArr.length === 0) filterArr = undefined;
+  return filterArr;
+}
 function SelectColumnFilter({
-  column: { filterValue, setFilter, preFilteredRows, id },
+  column: { filterValue = [], setFilter, preFilteredRows, id },
 }) {
-  // Calculate the options for filtering
-  // using the preFilteredRows
-  const options = React.useMemo(() => {
+  const options = useMemo(() => {
     const options = new Set();
     preFilteredRows.forEach((row) => {
       options.add(row.values[id]);
@@ -47,21 +67,26 @@ function SelectColumnFilter({
     return [...options.values()];
   }, [id, preFilteredRows]);
 
-  // Render a multi-select box
   return (
-    <select
-      value={filterValue}
-      onChange={(e) => {
-        setFilter(e.target.value || undefined);
-      }}
-    >
-      <option value="">All</option>
-      {options.map((option, i) => (
-        <option key={i} value={option}>
-          {option}
-        </option>
+    <>
+      {options?.map((option, i) => (
+        <div key={i}>
+          <input
+            type="checkbox"
+            className="focus:ring-blue-500 h-4 w-4 text-blue-600 border-gray-300 rounded"
+            id={option}
+            name={option}
+            value={option}
+            onChange={(e) => {
+              setFilter(setFilteredParams(filterValue, e.target.value));
+            }}
+          ></input>
+          <label htmlFor={option} className="ml-1.5 font-medium text-gray-700">
+            {option}
+          </label>
+        </div>
       ))}
-    </select>
+    </>
   );
 }
 
@@ -108,8 +133,8 @@ function Table({ columns, data }) {
 
   return (
     <>
-      <table {...getTableProps()}>
-        <thead>
+      <table className="min-w-full md:border-separate" {...getTableProps()}>
+        <thead className="bg-[#f3d6d9] ">
           {headerGroups.map((headerGroup) => (
             <tr
               className=" cursor-pointer w-14"
@@ -117,7 +142,11 @@ function Table({ columns, data }) {
               {...headerGroup.getHeaderGroupProps()}
             >
               {headerGroup.headers.map((column) => (
-                <th key={headerGroup[column]} {...column.getHeaderProps()}>
+                <th
+                  className="px-6 py-3 text-m font-bold text-left text-gray-500 uppercase "
+                  key={headerGroup[column]}
+                  {...column.getHeaderProps()}
+                >
                   {column.render("Header")}
                   <div>{column.filter ? column.render("Filter") : null}</div>
                 </th>
@@ -125,14 +154,18 @@ function Table({ columns, data }) {
             </tr>
           ))}
         </thead>
-        <tbody {...getTableBodyProps()}>
+        <tbody className="bg-[#635e58e6] m-3" {...getTableBodyProps()}>
           {firstPageRows.map((row, i) => {
             prepareRow(row);
             return (
               <tr key={i} {...row.getRowProps()}>
                 {row.cells.map((cell) => {
                   return (
-                    <td key={cell} {...cell.getCellProps()}>
+                    <td
+                      className="px-6 py-3 text-m"
+                      key={cell}
+                      {...cell.getCellProps()}
+                    >
                       {cell.render("Cell")}
                     </td>
                   );
@@ -152,15 +185,6 @@ function Table({ columns, data }) {
   );
 }
 
-// Define a custom filter filter function!
-function filterGreaterThan(rows, id, filterValue) {
-  return rows.filter((row) => {
-    const rowValue = row.values[id];
-    return rowValue >= filterValue;
-  });
-}
-
-// This is an autoRemove method on the filter function that
 // when given the new filter value and returns true, the filter
 // will be automatically removed. Normally this is just an undefined
 // check, but here, we want to remove the filter if it's not a number
@@ -170,9 +194,15 @@ function ReactTable() {
   const [openAdd, setOpenAdd] = useState(false);
   const [openEdit, setOpenEdit] = useState(false);
   const [patientId, setPatientId] = useState("");
-  // function dialogEdit() {
-  //   setOpenEdit(true);
-  // }
+
+  const editUser = (id) => {
+    dialogEdit();
+    setPatientId(id);
+  };
+
+  function dialogEdit() {
+    setOpenEdit(true);
+  }
   function dialogAdd() {
     setOpenAdd(true);
   }
@@ -204,7 +234,7 @@ function ReactTable() {
         Header: "Pet Type",
         accessor: "petType",
         Filter: SelectColumnFilter,
-        filter: "includes",
+        filter: MultipleFilter,
         width: "auto",
       },
       {
@@ -213,7 +243,7 @@ function ReactTable() {
         Cell: (props) => {
           return (
             <IconButton tooltip="Enter Folder">
-              <EditIcon />
+              <EditIcon onClick={() => editUser(props.row.original.id)} />
             </IconButton>
           );
         },
