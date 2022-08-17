@@ -5,6 +5,12 @@ module.exports = {
     "./components/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
+    screens: {
+      "maximum": { "max": "767px" },
+      // => @media (max-width: 767px) { ... }
+      "minimum": { "max": "528px" },
+      // => @media (max-width: 500px) { ... }
+    },
     colors: {
       primary: "#4D4DFE",
     },

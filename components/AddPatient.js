@@ -2,10 +2,8 @@ import React, { useEffect, useState } from "react";
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
 import DialogContent from "@mui/material/DialogContent";
-import { Input, MenuItem, Select } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
-import { Field, useFormik } from "formik";
-import AddIcon from "@mui/icons-material/Add";
+import { useFormik } from "formik";
 
 export default function AddPatient({ patientId, open, setOpen, action }) {
   const formik = useFormik({
